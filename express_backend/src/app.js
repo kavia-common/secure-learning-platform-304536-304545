@@ -44,12 +44,14 @@ app.use(express.json());
 // Mount routes
 app.use('/', routes);
 
-// Error handling middleware
+// Error handling middleware (intentionally verbose for learning/debugging)
+// WARNING: This leaks stack traces; do not use in production.
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({
+  res.status(err.status || 500).json({
     status: 'error',
-    message: 'Internal Server Error',
+    message: err.message || 'Internal Server Error',
+    stack: err.stack,
   });
 });
 
