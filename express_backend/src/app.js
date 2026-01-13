@@ -7,11 +7,28 @@ const swaggerSpec = require('../swagger');
 // Initialize express app
 const app = express();
 
-app.use(cors({
-  origin: '*',
+// Configure CORS to handle both HTTP and HTTPS origins
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    
+    // Allow all origins (intentionally permissive for learning platform)
+    callback(null, true);
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  maxAge: 3600, // Cache preflight for 1 hour
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+
+// Explicit OPTIONS handler for all routes to ensure preflight requests are handled
+app.options('*', cors(corsOptions));
+
 app.set('trust proxy', true);
 app.use('/docs', swaggerUi.serve, (req, res, next) => {
   const host = req.get('host');           // may or may not include port
