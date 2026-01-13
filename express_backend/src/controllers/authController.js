@@ -18,6 +18,14 @@ async function register(req, res, next) {
       },
     });
   } catch (err) {
+    // Map common Mongo/Mongoose errors to non-500 responses so API consumers
+    // see predictable outcomes during verification.
+    if (err && err.code === 11000) {
+      return res.status(409).json({ status: 'error', message: 'Email already registered' });
+    }
+    if (err && err.name === 'ValidationError') {
+      return res.status(400).json({ status: 'error', message: err.message });
+    }
     return next(err);
   }
 }

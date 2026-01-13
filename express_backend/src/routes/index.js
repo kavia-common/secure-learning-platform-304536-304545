@@ -11,9 +11,10 @@ const router = express.Router();
 
 /**
  * @swagger
- * /:
+ * /health:
  *   get:
  *     summary: Health endpoint
+ *     description: Canonical health endpoint (alias of `/`).
  *     responses:
  *       200:
  *         description: Service health check passed
@@ -34,6 +35,18 @@ const router = express.Router();
  *                 environment:
  *                   type: string
  *                   example: development
+ */
+router.get('/health', healthController.check.bind(healthController));
+
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Root health endpoint (alias)
+ *     description: Backwards-compatible alias of `/health`.
+ *     responses:
+ *       200:
+ *         description: Service health check passed
  */
 router.get('/', healthController.check.bind(healthController));
 
