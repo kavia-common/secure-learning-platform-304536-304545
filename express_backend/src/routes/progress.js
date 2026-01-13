@@ -69,4 +69,18 @@ router.get('/leaderboard', progressController.leaderboard);
  */
 router.post('/reset', requireAuth, progressController.resetMyProgress);
 
+/**
+ * @swagger
+ * /api/progress/flags:
+ *   get:
+ *     tags: [Progress]
+ *     summary: Get current user's captured CTF flags
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Captured flags list
+ */
+router.get('/flags', requireAuth, progressController.getCapturedFlags);
+
 module.exports = router;

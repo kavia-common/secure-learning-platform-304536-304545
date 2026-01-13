@@ -1,4 +1,5 @@
 const progressService = require('../services/progressService');
+const Flag = require('../models/Flag');
 
 // PUBLIC_INTERFACE
 async function myProgress(req, res, next) {
@@ -45,9 +46,21 @@ async function resetMyProgress(req, res, next) {
   }
 }
 
+// PUBLIC_INTERFACE
+async function getCapturedFlags(req, res, next) {
+  /** Get current user's captured CTF flags. */
+  try {
+    const flags = await Flag.find({ userId: req.user._id }).sort({ capturedAt: -1 });
+    return res.status(200).json({ status: 'ok', flags });
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
   myProgress,
   mySummary,
   leaderboard,
   resetMyProgress,
+  getCapturedFlags,
 };

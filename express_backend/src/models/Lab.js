@@ -35,6 +35,12 @@ const LabSchema = new mongoose.Schema(
     solutionCheck: { type: SolutionCheckSchema, default: () => ({}) },
 
     isPublished: { type: Boolean, default: true },
+    
+    // Level progression (1-9 for our vulnerability labs)
+    level: { type: Number, default: 1, index: true },
+    
+    // OWASP Top 10 mapping
+    owaspCategory: { type: String, default: '' },
   },
   { timestamps: true }
 );

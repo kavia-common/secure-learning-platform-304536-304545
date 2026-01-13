@@ -5,6 +5,7 @@ const authRoutes = require('./auth');
 const labsRoutes = require('./labs');
 const progressRoutes = require('./progress');
 const adminRoutes = require('./admin');
+const vulnerableRoutes = require('./vulnerable');
 
 const router = express.Router();
 // Health endpoint
@@ -55,5 +56,6 @@ router.use('/api/auth', authRoutes);
 router.use('/api/labs', labsRoutes);
 router.use('/api/progress', progressRoutes);
 router.use('/api/admin', adminRoutes);
+router.use('/api/vulnerable', vulnerableRoutes);
 
 module.exports = router;
